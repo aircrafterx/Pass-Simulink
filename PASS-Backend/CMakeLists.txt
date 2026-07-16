@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(PASS_Simulink_Backend
     src/main.cpp
+    src/Clock/ClockBlock.cpp
 )
 
 target_include_directories(PASS_Simulink_Backend
