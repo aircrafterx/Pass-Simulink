@@ -1,6 +1,6 @@
 #pragma once
 
-namespace backend{
+namespace pass::simulink{
     class ClockBlock{
         private:
             double CurrentTime;
