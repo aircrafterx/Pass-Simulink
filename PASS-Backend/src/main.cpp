@@ -3,11 +3,13 @@
 #include "Clock/ClockBlock.hpp"
 #include "Sine/SineBlock.hpp"
 #include "Cosine/CosineBlock.hpp"
+#include "Scope/ScopeBlock.hpp"
 
 int main(){
     pass::simulink::ClockBlock clock;
     pass::simulink::SineBlock sine;
     pass::simulink::CosineBlock cosine;
+    pass::simulink::ScopeBlock scope;
 
     for(int i = 0; i < 10; i++){
         clock.tick();
@@ -16,7 +18,11 @@ int main(){
         double s = sine.process(t);
         double c = cosine.process(t);
 
-        std::cout << "t = " << t << ", sin(t) = " << s << ", cos(t) = " << c << std::endl;
+        scope.addSample(t, s, c);
+    }
+
+    for(const auto& sample : scope.getSamples()){
+        std::cout << "Time: " << sample.time << " Sine: " << sample.sine << " Cosine: " << sample.cosine << std::endl;
     }
 
     return 0;

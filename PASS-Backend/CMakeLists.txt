@@ -10,6 +10,7 @@ add_executable(PASS_Simulink_Backend
     src/Clock/ClockBlock.cpp
     src/Sine/SineBlock.cpp
     src/Cosine/CosineBlock.cpp
+    src/Scope/ScopeBlock.cpp
 )
 
 target_include_directories(PASS_Simulink_Backend
