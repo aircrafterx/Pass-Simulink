@@ -12,6 +12,7 @@ add_executable(PASS_Simulink_Backend
     src/Cosine/CosineBlock.cpp
     src/Scope/ScopeBlock.cpp
     src/Engine/ExecutionEngine.cpp
+    src/Graph/ConnectionManager.cpp
 )
 
 target_include_directories(PASS_Simulink_Backend

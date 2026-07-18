@@ -1,0 +1,20 @@
+#pragma once 
+
+#include <string>
+#include <vector>
+
+namespace pass::simulink{
+    struct Connection{
+        std::string from;
+        std::string to;
+    };
+
+    class ConnectionManager{
+        private:
+            std::vector<Connection> connections;
+
+        public:
+            void connect(const std::string& from, const std::string& to);
+            const std::vector<Connection>& getConnections() const;
+    };
+}
