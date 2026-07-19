@@ -4,6 +4,7 @@
 #include "Sine/SineBlock.hpp"
 #include "Cosine/CosineBlock.hpp"
 #include "Scope/ScopeBlock.hpp"
+#include "Graph/ConnectionManager.hpp"
 
 namespace pass::simulink{
     class ExecutionEngine{
@@ -13,7 +14,10 @@ namespace pass::simulink{
             CosineBlock cosine;
             ScopeBlock scope;
 
+            ConnectionManager graph;
+
         public:
+            ExecutionEngine();
             void step();
             const ScopeBlock& getScope() const;
     };

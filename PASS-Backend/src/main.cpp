@@ -1,17 +1,14 @@
 #include <iostream>
 
-#include "Graph/ConnectionManager.hpp"
+#include "Engine/ExecutionEngine.hpp"
 
 int main(){
-    pass::simulink::ConnectionManager graph;
+    pass::simulink::ExecutionEngine engine;
 
-    graph.connect("Clock", "Sine");
-    graph.connect("Clock", "Cosine");
-    graph.connect("Sine", "Scope");
-    graph.connect("Cosine", "Scope");
+    for(int i = 0; i < 10; i++) engine.step();
 
-    for(const auto& c : graph.getConnections()){
-        std::cout << c.from << " -> " << c.to << std::endl;
+    for(const auto& sample : engine.getScope().getSamples()){
+        std::cout << "Time: " << sample.time << ", Sine: " << sample.sine << ", cosine: " << sample.cosine << std::endl;
     }
 
     return 0;
