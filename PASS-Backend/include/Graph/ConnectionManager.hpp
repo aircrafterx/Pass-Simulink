@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "Block/BlockManager.hpp"
+
 namespace pass::simulink{
     struct Connection{
         std::string from;
@@ -14,7 +16,7 @@ namespace pass::simulink{
             std::vector<Connection> connections;
 
         public:
-            void connect(const std::string& from, const std::string& to);
+            bool connect(const BlockManager& blockManager, const std::string& from, const std::string& to);
             const std::vector<Connection>& getConnections() const;
     };
 }

@@ -24,6 +24,16 @@ namespace pass::simulink{
         return nullptr;
     }
 
+    const Block *BlockManager::getBlock(const std::string &id) const{
+        for (const auto &block : blocks){
+            if (block.id == id){
+                return &block;
+            }
+        }
+
+        return nullptr;
+    }
+
     const std::vector<Block> &BlockManager::getBlocks() const{
         return blocks;
     }

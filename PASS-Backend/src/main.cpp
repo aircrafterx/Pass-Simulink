@@ -1,19 +1,28 @@
 #include <iostream>
 
 #include "Block/BlockManager.hpp"
+#include "Graph/ConnectionManager.hpp"
 
 int main(){
-    pass::simulink::BlockManager manager;
+    pass::simulink::BlockManager blockManager;
+    pass::simulink::ConnectionManager connectionManager;
 
-    manager.addBlock({"Clock_1", "Clock", 100, 100});
-    manager.addBlock({"Sine_1", "Sine", 300, 100});
-    manager.addBlock({"Cosine_1", "Cosine", 300, 250});
-    manager.addBlock({"Scope_1", "Scope", 550, 170});
+    blockManager.addBlock({"Clock_1", "Clock", 100, 100});
+    blockManager.addBlock({"Sine_1", "Sine", 300, 100});
+    blockManager.addBlock({"Scope_1", "Scope", 500, 100});
 
-    manager.moveBlock("Clock_1", 200, 150);
+    std::string from = "Clock_1", to = "Sine_1";
 
-    for (const auto &block : manager.getBlocks()){
-        std::cout << block.id << " | " << block.type << " | (" << block.x << ", " << block.y << ")" << std::endl;
+    if (connectionManager.connect(blockManager, from, to )){
+        std::cout << "Clock -> Sine connected" << std::endl;
+    }
+
+    if (!connectionManager.connect(blockManager, from, to)){
+        std::cout << "Connection failed" << std::endl;
+    }
+
+    for (const auto &connection : connectionManager.getConnections()){
+        std::cout << connection.from << " -> " << connection.to << std::endl;
     }
 
     return 0;

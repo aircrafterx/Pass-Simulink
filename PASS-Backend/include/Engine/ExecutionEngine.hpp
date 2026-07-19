@@ -14,7 +14,6 @@ namespace pass::simulink{
             CosineBlock cosine;
             ScopeBlock scope;
 
-            ConnectionManager graph;
 
         public:
             ExecutionEngine();
