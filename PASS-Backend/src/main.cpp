@@ -2,28 +2,29 @@
 
 #include "Block/BlockManager.hpp"
 #include "Graph/ConnectionManager.hpp"
+#include "Engine/GraphExecutionEngine.hpp"
 
 int main(){
-    pass::simulink::BlockManager blockManager;
-    pass::simulink::ConnectionManager connectionManager;
 
-    blockManager.addBlock({"Clock_1", "Clock", 100, 100});
-    blockManager.addBlock({"Sine_1", "Sine", 300, 100});
-    blockManager.addBlock({"Scope_1", "Scope", 500, 100});
+    pass::simulink::BlockManager blocks;
 
-    std::string from = "Clock_1", to = "Sine_1";
+    pass::simulink::ConnectionManager graph;
 
-    if (connectionManager.connect(blockManager, from, to )){
-        std::cout << "Clock -> Sine connected" << std::endl;
-    }
+    blocks.addBlock({"Clock_1", "Clock", 100, 100});
+    blocks.addBlock({"Sine_1", "Sine", 300, 100});
+    blocks.addBlock({"Cosine_1", "Cosine", 300, 250});
+    blocks.addBlock({"Scope_1", "Scope", 500, 150});
 
-    if (!connectionManager.connect(blockManager, from, to)){
-        std::cout << "Connection failed" << std::endl;
-    }
+    graph.connect(blocks, "Clock_1", "Sine_1");
+    graph.connect(blocks, "Clock_1", "Cosine_1");
+    graph.connect(blocks, "Sine_1", "Scope_1");
+    graph.connect(blocks, "Cosine_1", "Scope_1");
 
-    for (const auto &connection : connectionManager.getConnections()){
-        std::cout << connection.from << " -> " << connection.to << std::endl;
-    }
+    pass::simulink::GraphExecutionEngine engine(
+        blocks,
+        graph);
+
+    engine.execute();
 
     return 0;
 }
