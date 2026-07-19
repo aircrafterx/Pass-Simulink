@@ -15,6 +15,7 @@ add_executable(PASS_Simulink_Backend
     src/Graph/ConnectionManager.cpp
     src/Block/BlockManager.cpp
     src/Engine/GraphExecutionEngine.cpp
+    src/Engine/SignalRouter.cpp
 )
 
 target_include_directories(PASS_Simulink_Backend

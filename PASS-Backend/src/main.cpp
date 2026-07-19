@@ -1,13 +1,9 @@
-#include <iostream>
-
 #include "Block/BlockManager.hpp"
 #include "Graph/ConnectionManager.hpp"
 #include "Engine/GraphExecutionEngine.hpp"
 
 int main(){
-
     pass::simulink::BlockManager blocks;
-
     pass::simulink::ConnectionManager graph;
 
     blocks.addBlock({"Clock_1", "Clock", 100, 100});
@@ -20,9 +16,7 @@ int main(){
     graph.connect(blocks, "Sine_1", "Scope_1");
     graph.connect(blocks, "Cosine_1", "Scope_1");
 
-    pass::simulink::GraphExecutionEngine engine(
-        blocks,
-        graph);
+    pass::simulink::GraphExecutionEngine engine(blocks, graph);
 
     engine.execute();
 
