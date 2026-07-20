@@ -1,20 +1,24 @@
 #pragma once
 
-#include <vector>
+#include <memory>
 #include <string>
+#include <unordered_map>
 
 #include "Block/Block.hpp"
 
 namespace pass::simulink{
     class BlockManager{
         private:
-            std::vector<Block> blocks;
+            std::unordered_map<std::string, std::unique_ptr<Block>> blocks;
 
         public:
-            void addBlock(const Block& block);
-            void moveBlock(const std::string& id, float x, float y);
+            bool addBlock(std::unique_ptr<Block> block);
             Block* getBlock(const std::string& id);
-            const Block *getBlock(const std::string& id) const;
-            const std::vector<Block> &getBlocks() const;
+            const Block* getBlock(const std::string& id) const;
+
+            const auto& getBlocks() const{
+                return blocks;
+            }
     };
+
 }

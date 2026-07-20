@@ -12,5 +12,6 @@ namespace pass::simulink{
             void setSignal(const std::string& blockId, double value);
             bool hasSignal(const std::string& blockId) const;
             double getSignal(const std::string& blockId) const;
+            void clear();
     };
 }

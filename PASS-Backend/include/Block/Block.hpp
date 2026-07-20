@@ -3,12 +3,19 @@
 #include <string>
 
 namespace pass::simulink{
-    struct Block{
-        std::string id;
-        std::string type;
+    class Block{
+        protected:
+            std::string id;
+        public:
+            virtual ~Block() = default;
+            virtual double execute(double input) = 0;
+            
+            void setId(const std::string &newId){
+                id = newId;
+            }
 
-        float x;
-        float y;
+            const std::string &getId() const{
+                return id;
+            }
     };
-
 }

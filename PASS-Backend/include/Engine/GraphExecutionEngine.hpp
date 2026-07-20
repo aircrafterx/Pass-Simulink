@@ -2,20 +2,18 @@
 
 #include "Block/BlockManager.hpp"
 #include "Graph/ConnectionManager.hpp"
-#include "Engine/SignalRouter.hpp"
+#include "Graph/TopologicalSorter.hpp"
+#include "Engine/ExecutionContext.hpp"
 
 namespace pass::simulink{
     class GraphExecutionEngine{
         private:
-            const BlockManager& blockManager;
-            const ConnectionManager& connectionManager;
-            SignalRouter router;
+            BlockManager& blockManager;
+            const ConnectionManager& graph;
+            ExecutionContext context;
 
         public:
-            GraphExecutionEngine(
-                const BlockManager &blocks,
-                const ConnectionManager &graph);
-
+            GraphExecutionEngine(BlockManager &blocks, const ConnectionManager &graph);
             void execute();
     };
 }

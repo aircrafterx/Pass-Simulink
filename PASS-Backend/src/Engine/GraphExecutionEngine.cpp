@@ -3,28 +3,41 @@
 #include <iostream>
 
 namespace pass::simulink{
-    GraphExecutionEngine::GraphExecutionEngine(const BlockManager &blocks, const ConnectionManager &graph) : blockManager(blocks), connectionManager(graph){
+    GraphExecutionEngine::GraphExecutionEngine(BlockManager& blocks, const ConnectionManager& graph)
+        : blockManager(blocks), graph(graph){
+
     }
 
     void GraphExecutionEngine::execute(){
-        std::cout << "========== Dynamic Signal Routing ==========\n";
-        for (const auto &connection : connectionManager.getConnections()){
-            const Block* from = blockManager.getBlock(connection.from);
-            const Block* to = blockManager.getBlock(connection.to);
+        context.router.clear();
 
-            if (!from || !to) continue;
-            std::cout << from->id << " ---> " << to->id << std::endl;
+        auto order = TopologicalSorter::sort(blockManager, graph);
+        std::cout << "\n===== EXECUTION =====\n";
 
-            double signal = static_cast<double>(from->id.length());
-            router.setSignal(from->id, signal);
+        for (const auto &id : order){
+            Block* block = blockManager.getBlock(id);
 
-            if (router.hasSignal(from->id)){
-                double received = router.getSignal(from->id);
-                std::cout << "Signal " << received << " routed to " << to->id << std::endl;
+            if (block == nullptr) continue;
+
+            double input = 0.0;
+            auto incoming = graph.incoming(id);
+
+            if (!incoming.empty()){
+                auto source = incoming.front().from;
+
+                if (context.router.hasSignal(source)) {
+                    input = context.router.getSignal(source);
+                }
             }
+
+            double output = block->execute(input);
+
+            context.router.setSignal(id, output);
+
+            std::cout << id << " : input=" << input << " output=" << output << std::endl;
         }
 
-        std::cout << "=====================================\n";
+        std::cout << "=====================" << std::endl;
     }
 
 }

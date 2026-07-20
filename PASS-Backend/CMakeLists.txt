@@ -1,24 +1,52 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(PASS_Simulink_Backend)
+project(
+    PASS_Simulink_Backend
+    VERSION 1.0
+    LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(PASS_Simulink_Backend
+include_directories(include)
+
+set(SOURCES
     src/main.cpp
-    src/Clock/ClockBlock.cpp
-    src/Sine/SineBlock.cpp
-    src/Cosine/CosineBlock.cpp
-    src/Scope/ScopeBlock.cpp
-    src/Engine/ExecutionEngine.cpp
-    src/Graph/ConnectionManager.cpp
+
     src/Block/BlockManager.cpp
-    src/Engine/GraphExecutionEngine.cpp
+    src/Block/ClockBlock.cpp
+    src/Block/SineBlock.cpp
+    src/Block/CosineBlock.cpp
+    src/Block/ScopeBlock.cpp
+
+    src/Graph/ConnectionManager.cpp
+    src/Graph/TopologicalSorter.cpp
+
     src/Engine/SignalRouter.cpp
+    src/Engine/GraphExecutionEngine.cpp
 )
 
-target_include_directories(PASS_Simulink_Backend
-    PRIVATE
-        include
+add_executable(
+    PASS_Simulink_Backend
+    ${SOURCES}
 )
+
+if(MSVC)
+    target_compile_options(
+        PASS_Simulink_Backend
+        PRIVATE
+        /W4
+    )
+
+else()
+    target_compile_options(
+        PASS_Simulink_Backend
+        PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+    )
+
+endif()

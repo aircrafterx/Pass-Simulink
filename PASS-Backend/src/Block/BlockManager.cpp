@@ -1,41 +1,35 @@
 #include "Block/BlockManager.hpp"
 
 namespace pass::simulink{
-    void BlockManager::addBlock(const Block &block){
-        blocks.push_back(block);
-    }
+    bool BlockManager::addBlock(std::unique_ptr<Block> block){
+        if (block == nullptr)
+            return false;
 
-    void BlockManager::moveBlock(const std::string &id, float x, float y){
-        for (auto &block : blocks){
-            if (block.id == id){
-                block.x = x;
-                block.y = y;
-                return;
-            }
-        }
+        std::string id = block->getId();
+
+        if (blocks.contains(id))
+            return false;
+
+        blocks[id] = std::move(block);
+
+        return true;
     }
 
     Block *BlockManager::getBlock(const std::string &id){
-        for (auto &block : blocks){
-            if (block.id == id){
-                return &block;
-            }
-        }
-        return nullptr;
+        auto it = blocks.find(id);
+
+        if (it == blocks.end())
+            return nullptr;
+
+        return it->second.get();
     }
 
     const Block *BlockManager::getBlock(const std::string &id) const{
-        for (const auto &block : blocks){
-            if (block.id == id){
-                return &block;
-            }
-        }
+        auto it = blocks.find(id);
 
-        return nullptr;
+        if (it == blocks.end())
+            return nullptr;
+
+        return it->second.get();
     }
-
-    const std::vector<Block> &BlockManager::getBlocks() const{
-        return blocks;
-    }
-
 }
