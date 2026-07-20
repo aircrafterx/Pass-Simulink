@@ -20,6 +20,13 @@ set(SOURCES
     src/Block/SineBlock.cpp
     src/Block/CosineBlock.cpp
     src/Block/ScopeBlock.cpp
+    src/Block/AddBlock.cpp
+    src/Block/MultiplyBlock.cpp
+    src/Block/AverageBlock.cpp
+    src/Block/GainBlock.cpp
+    src/Block/SubtractBlock.cpp
+    src/Block/MinBlock.cpp
+    src/Block/MaxBlock.cpp
 
     src/Graph/ConnectionManager.cpp
     src/Graph/TopologicalSorter.cpp

@@ -3,12 +3,9 @@
 #include "Block/Block.hpp"
 
 namespace pass::simulink{
-    class ClockBlock : public Block{
-        private:
-            double currentTime = 0.0;
-
+    class MaxBlock : public Block{
         public:
-            ClockBlock();
+            MaxBlock();
             double execute(const std::vector<double>& inputs) override;
     };
 }

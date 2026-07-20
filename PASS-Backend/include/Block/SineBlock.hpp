@@ -6,6 +6,6 @@ namespace pass::simulink{
     class SineBlock : public Block{
         public:
             SineBlock();
-            double execute(double input) override;
+            double execute(const std::vector<double>& inputs) override;
     };
 }

@@ -11,7 +11,7 @@ namespace pass::simulink{
 
         public:
             ScopeBlock();
-            double execute(double input) override;
+            double execute(const std::vector<double>& inputs) override;
             const std::vector<double> &getValues() const;
     };
 }

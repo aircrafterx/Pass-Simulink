@@ -1,6 +1,7 @@
 #include "Engine/GraphExecutionEngine.hpp"
 
 #include <iostream>
+#include <vector>
 
 namespace pass::simulink{
     GraphExecutionEngine::GraphExecutionEngine(BlockManager& blocks, const ConnectionManager& graph)
@@ -19,22 +20,30 @@ namespace pass::simulink{
 
             if (block == nullptr) continue;
 
-            double input = 0.0;
+            std::vector<double> inputs;
             auto incoming = graph.incoming(id);
 
-            if (!incoming.empty()){
-                auto source = incoming.front().from;
-
+            for (const auto &conn : incoming) {
+                auto source = conn.from;
                 if (context.router.hasSignal(source)) {
-                    input = context.router.getSignal(source);
+                    inputs.push_back(context.router.getSignal(source));
+                } else {
+                    inputs.push_back(0.0);
                 }
             }
 
-            double output = block->execute(input);
+            double output = block->execute(inputs);
 
             context.router.setSignal(id, output);
 
-            std::cout << id << " : input=" << input << " output=" << output << std::endl;
+            std::cout << id << " : inputs=[";
+            for (size_t i = 0; i < inputs.size(); ++i) {
+                std::cout << inputs[i];
+                if (i + 1 < inputs.size()) {
+                    std::cout << ", ";
+                }
+            }
+            std::cout << "] output=" << output << std::endl;
         }
 
         std::cout << "=====================" << std::endl;
