@@ -33,6 +33,7 @@ set(SOURCES
 
     src/Engine/SignalRouter.cpp
     src/Engine/GraphExecutionEngine.cpp
+    src/Engine/SimulationScheduler.cpp
 )
 
 add_executable(

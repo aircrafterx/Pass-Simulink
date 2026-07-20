@@ -13,6 +13,7 @@
 #include "Graph/ConnectionManager.hpp"
 
 #include "Engine/GraphExecutionEngine.hpp"
+#include "Engine/SimulationScheduler.hpp"
 
 using namespace pass::simulink;
 
@@ -63,13 +64,12 @@ int main(){
     std::cout << std::endl;
 
     GraphExecutionEngine engine(blockManager, graph);
+    SimulationScheduler scheduler(engine, 0.0, 1.0, 0.2);
 
-    std::cout << "Simulation Start (Running 3 steps)\n";
+    std::cout << "Simulation Start (Configured: start=0.0, end=1.0, step=0.2)\n";
     std::cout << "=============================\n";
 
-    engine.execute();
-    engine.execute();
-    engine.execute();
+    scheduler.run();
 
     std::cout << "=============================\n";
     std::cout << "Simulation Finished\n";
@@ -84,6 +84,16 @@ int main(){
         }
         std::cout << "]\n";
     }
+
+    std::cout << "\n--- Testing Cycle Detection ---\n";
+    std::cout << "Connecting Scope_1 -> Clock_1 to introduce a feedback cycle...\n";
+    bool connected = graph.connect(blockManager, "Scope_1", "Clock_1");
+    if (connected) {
+        std::cout << "Feedback connection Scope_1 ---> Clock_1 created successfully.\n";
+    }
+    
+    std::cout << "Attempting to run simulation with cyclic graph...\n";
+    scheduler.run();
 
     return 0;
 }

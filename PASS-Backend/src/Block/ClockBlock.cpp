@@ -4,7 +4,16 @@ namespace pass::simulink{
     ClockBlock::ClockBlock(){}
 
     double ClockBlock::execute(const std::vector<double>&){
-        currentTime += 1.0;
-        return currentTime;
+        double t = currentTime;
+        currentTime += stepSize;
+        return t;
+    }
+
+    void ClockBlock::setStepSize(double step){
+        stepSize = step;
+    }
+
+    void ClockBlock::setCurrentTime(double time){
+        currentTime = time;
     }
 }

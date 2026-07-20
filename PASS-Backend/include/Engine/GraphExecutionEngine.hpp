@@ -15,5 +15,9 @@ namespace pass::simulink{
         public:
             GraphExecutionEngine(BlockManager &blocks, const ConnectionManager &graph);
             void execute();
+
+            BlockManager& getBlockManager() { return blockManager; }
+            const BlockManager& getBlockManager() const { return blockManager; }
+            const ConnectionManager& getGraph() const { return graph; }
     };
 }

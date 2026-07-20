@@ -13,6 +13,11 @@ namespace pass::simulink{
         context.router.clear();
 
         auto order = TopologicalSorter::sort(blockManager, graph);
+        if (order.size() < blockManager.getBlocks().size()) {
+            std::cout << "\nCycle detected. Simulation aborted.\n";
+            return;
+        }
+
         std::cout << "\n===== EXECUTION =====\n";
 
         for (const auto &id : order){
