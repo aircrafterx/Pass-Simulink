@@ -7,5 +7,6 @@ namespace pass::simulink{
         public:
             SubtractBlock();
             double execute(const std::vector<double>& inputs) override;
+            std::string getType() const override;
     };
 }

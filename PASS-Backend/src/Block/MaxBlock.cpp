@@ -13,4 +13,8 @@ namespace pass::simulink{
         }
         return maxVal;
     }
+
+    std::string MaxBlock::getType() const{
+        return "Max";
+    }
 }

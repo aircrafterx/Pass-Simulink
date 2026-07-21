@@ -16,4 +16,19 @@ namespace pass::simulink{
     void ClockBlock::setCurrentTime(double time){
         currentTime = time;
     }
+
+    std::string ClockBlock::getType() const{
+        return "Clock";
+    }
+
+    std::map<std::string, double> ClockBlock::getParameters() const{
+        return { {"stepSize", stepSize} };
+    }
+
+    void ClockBlock::setParameters(const std::map<std::string, double>& params){
+        auto it = params.find("stepSize");
+        if (it != params.end()){
+            stepSize = it->second;
+        }
+    }
 }

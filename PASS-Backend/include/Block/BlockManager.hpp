@@ -13,6 +13,9 @@ namespace pass::simulink{
 
         public:
             bool addBlock(std::unique_ptr<Block> block);
+            bool removeBlock(const std::string& id);
+            void clear();
+
             Block* getBlock(const std::string& id);
             const Block* getBlock(const std::string& id) const;
 

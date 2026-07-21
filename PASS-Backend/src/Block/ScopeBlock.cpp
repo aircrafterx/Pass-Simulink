@@ -9,7 +9,15 @@ namespace pass::simulink{
         return val;
     }
 
-    const std::vector<double> &ScopeBlock::getValues() const{
+    std::string ScopeBlock::getType() const{
+        return "Scope";
+    }
+
+    const std::vector<double>& ScopeBlock::getValues() const{
         return values;
     }
-}
+
+    void ScopeBlock::reset(){
+        values.clear();
+    }
+}

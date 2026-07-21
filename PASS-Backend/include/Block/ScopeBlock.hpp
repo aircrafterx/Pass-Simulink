@@ -12,6 +12,8 @@ namespace pass::simulink{
         public:
             ScopeBlock();
             double execute(const std::vector<double>& inputs) override;
-            const std::vector<double> &getValues() const;
+            std::string getType() const override;
+            const std::vector<double>& getValues() const;
+            void reset();   // clears recorded values; called by Scheduler before each run
     };
 }

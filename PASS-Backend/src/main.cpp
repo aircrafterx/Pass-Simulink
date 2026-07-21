@@ -15,7 +15,12 @@
 #include "Engine/GraphExecutionEngine.hpp"
 #include "Engine/SimulationScheduler.hpp"
 
+#include "Graph/ProjectSerializer.hpp"
+
+#include <nlohmann/json.hpp>
+
 using namespace pass::simulink;
+using json = nlohmann::json;
 
 int main(){
     BlockManager blockManager;
@@ -43,57 +48,119 @@ int main(){
 
     ConnectionManager graph;
 
-    // Clock_1 -> Sine_1
-    graph.connect(blockManager, "Clock_1", "Sine_1");
-    // Clock_1 -> Add_1
-    graph.connect(blockManager, "Clock_1", "Add_1");
-    // Sine_1 -> Add_1
-    graph.connect(blockManager, "Sine_1", "Add_1");
-    // Add_1 -> Gain_1
-    graph.connect(blockManager, "Add_1", "Gain_1");
+    // Clock_1 -> Sine_1  (Sine only has one input, port 0)
+    graph.connect(blockManager, "Clock_1", "Sine_1", 0, 0);
+    // Clock_1 -> Add_1   (port 0 of Add_1)
+    graph.connect(blockManager, "Clock_1", "Add_1",  0, 0);
+    // Sine_1  -> Add_1   (port 1 of Add_1)
+    graph.connect(blockManager, "Sine_1",  "Add_1",  0, 1);
+    // Add_1  -> Gain_1
+    graph.connect(blockManager, "Add_1",   "Gain_1", 0, 0);
     // Gain_1 -> Scope_1
-    graph.connect(blockManager, "Gain_1", "Scope_1");
+    graph.connect(blockManager, "Gain_1",  "Scope_1", 0, 0);
 
-    std::cout << "\nConnections\n";
-    std::cout << "-----------------------------\n";
-
-    for (const auto &connection : graph.getConnections()){
-        std::cout << connection.from << " ---> " << connection.to << '\n';
+    // --- Print connections as JSON ---
+    {
+        json connList = json::array();
+        for (const auto& c : graph.getConnections()){
+            json entry;
+            entry["from"]     = c.from;
+            entry["fromPort"] = c.fromPort;
+            entry["to"]       = c.to;
+            entry["toPort"]   = c.toPort;
+            connList.push_back(entry);
+        }
+        json out;
+        out["event"]       = "graph_built";
+        out["connections"] = connList;
+        std::cout << out.dump(4) << "\n";
     }
-
-    std::cout << std::endl;
 
     GraphExecutionEngine engine(blockManager, graph);
     SimulationScheduler scheduler(engine, 0.0, 1.0, 0.2);
 
-    std::cout << "Simulation Start (Configured: start=0.0, end=1.0, step=0.2)\n";
-    std::cout << "=============================\n";
+    // --- Print simulation start as JSON ---
+    {
+        json out;
+        out["event"]     = "simulation_start";
+        out["startTime"] = scheduler.getStartTime();
+        out["endTime"]   = scheduler.getEndTime();
+        out["stepSize"]  = scheduler.getStepSize();
+        std::cout << out.dump(4) << "\n";
+    }
 
     scheduler.run();
 
-    std::cout << "=============================\n";
-    std::cout << "Simulation Finished\n";
+    // --- Print scope results as JSON ---
+    {
+        const auto* scopePtr = dynamic_cast<const ScopeBlock*>(blockManager.getBlock("Scope_1"));
+        json out;
+        out["event"]  = "simulation_end";
+        out["scope"]  = "Scope_1";
+        out["values"] = scopePtr ? scopePtr->getValues() : std::vector<double>{};
+        std::cout << out.dump(4) << "\n";
+    }
 
-    // Verify Scope has the outputs
-    const auto *scopePtr = dynamic_cast<const ScopeBlock*>(blockManager.getBlock("Scope_1"));
-    if (scopePtr) {
-        std::cout << "Scope Recorded Values: [";
-        const auto &vals = scopePtr->getValues();
-        for (size_t i = 0; i < vals.size(); ++i) {
-            std::cout << vals[i] << (i + 1 < vals.size() ? ", " : "");
+    // ==========================================================
+    // JSON SAVE / LOAD
+    // ==========================================================
+    const std::string projectFile = "project.json";
+
+    bool saved = ProjectSerializer::saveToFile(projectFile, blockManager, graph, scheduler);
+    {
+        json out;
+        out["event"]  = saved ? "save_ok" : "save_failed";
+        out["file"]   = projectFile;
+        std::cout << out.dump(4) << "\n";
+    }
+    if (!saved) return 1;
+
+    // --- Load into fresh objects ---
+    BlockManager      bm2;
+    ConnectionManager g2;
+    GraphExecutionEngine engine2(bm2, g2);
+    SimulationScheduler  scheduler2(engine2, 0.0, 0.0, 1.0);
+
+    bool loaded = ProjectSerializer::loadFromFile(projectFile, bm2, g2, scheduler2);
+    {
+        json out;
+        out["event"] = loaded ? "load_ok" : "load_failed";
+        out["file"]  = projectFile;
+        if (loaded){
+            out["startTime"] = scheduler2.getStartTime();
+            out["endTime"]   = scheduler2.getEndTime();
+            out["stepSize"]  = scheduler2.getStepSize();
         }
-        std::cout << "]\n";
+        std::cout << out.dump(4) << "\n";
+    }
+    if (!loaded) return 1;
+
+    // --- Re-run from loaded project ---
+    {
+        json out;
+        out["event"] = "rerun_start";
+        out["source"] = projectFile;
+        std::cout << out.dump(4) << "\n";
     }
 
-    std::cout << "\n--- Testing Cycle Detection ---\n";
-    std::cout << "Connecting Scope_1 -> Clock_1 to introduce a feedback cycle...\n";
-    bool connected = graph.connect(blockManager, "Scope_1", "Clock_1");
-    if (connected) {
-        std::cout << "Feedback connection Scope_1 ---> Clock_1 created successfully.\n";
+    scheduler2.run();
+
+    // --- Print loaded scope results as JSON ---
+    {
+        const auto* scopePtr2 = dynamic_cast<const ScopeBlock*>(bm2.getBlock("Scope_1"));
+        json out;
+        out["event"]  = "rerun_end";
+        out["scope"]  = "Scope_1";
+        out["values"] = scopePtr2 ? scopePtr2->getValues() : std::vector<double>{};
+        std::cout << out.dump(4) << "\n";
     }
-    
-    std::cout << "Attempting to run simulation with cyclic graph...\n";
-    scheduler.run();
+
+    {
+        json out;
+        out["event"]  = "round_trip_complete";
+        out["status"] = "ok";
+        std::cout << out.dump(4) << "\n";
+    }
 
     return 0;
 }

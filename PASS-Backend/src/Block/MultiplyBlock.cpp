@@ -11,4 +11,8 @@ namespace pass::simulink{
         }
         return product;
     }
+
+    std::string MultiplyBlock::getType() const{
+        return "Multiply";
+    }
 }

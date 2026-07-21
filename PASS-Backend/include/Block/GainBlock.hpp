@@ -14,5 +14,9 @@ namespace pass::simulink{
             double getGain() const;
 
             double execute(const std::vector<double>& inputs) override;
+            std::string getType() const override;
+
+            std::map<std::string, double> getParameters() const override;
+            void setParameters(const std::map<std::string, double>& params) override;
     };
 }

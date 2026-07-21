@@ -13,4 +13,8 @@ namespace pass::simulink{
         }
         return minVal;
     }
+
+    std::string MinBlock::getType() const{
+        return "Min";
+    }
 }

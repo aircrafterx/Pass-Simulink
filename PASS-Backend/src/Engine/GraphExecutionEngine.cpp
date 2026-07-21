@@ -2,6 +2,10 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 namespace pass::simulink{
     GraphExecutionEngine::GraphExecutionEngine(BlockManager& blocks, const ConnectionManager& graph)
@@ -9,49 +13,70 @@ namespace pass::simulink{
 
     }
 
-    void GraphExecutionEngine::execute(){
-        context.router.clear();
+    // -----------------------------------------------------------------------
+    // prepare() — run Kahn's sort once; cache the result.
+    // Returns false if a cycle is detected (order.size() < block count).
+    // -----------------------------------------------------------------------
+    bool GraphExecutionEngine::prepare(){
+        cachedOrder = TopologicalSorter::sort(blockManager, graph);
+        dirty = false;
+        return cachedOrder.size() == blockManager.getBlocks().size();
+    }
 
-        auto order = TopologicalSorter::sort(blockManager, graph);
-        if (order.size() < blockManager.getBlocks().size()) {
-            std::cout << "\nCycle detected. Simulation aborted.\n";
-            return;
+    // -----------------------------------------------------------------------
+    // execute() — one simulation tick; output is a single JSON object.
+    // -----------------------------------------------------------------------
+    void GraphExecutionEngine::execute(int tickIndex, double time){
+        // Re-sort only if the graph changed since last prepare().
+        if (dirty){
+            if (!prepare()){
+                json err;
+                err["error"] = "Cycle detected — simulation aborted";
+                std::cout << err.dump(4) << "\n";
+                return;
+            }
         }
 
-        std::cout << "\n===== EXECUTION =====\n";
+        context.router.clear();
 
-        for (const auto &id : order){
+        json tickResult;
+        tickResult["tick"]      = tickIndex;
+        tickResult["time"]      = time;
+        tickResult["execution"] = json::array();
+
+        for (const auto& id : cachedOrder){
             Block* block = blockManager.getBlock(id);
-
             if (block == nullptr) continue;
 
-            std::vector<double> inputs;
+            // Gather incoming connections, sorted by toPort for deterministic order.
             auto incoming = graph.incoming(id);
+            std::sort(incoming.begin(), incoming.end(),
+                      [](const Connection& a, const Connection& b){
+                          return a.toPort < b.toPort;
+                      });
 
-            for (const auto &conn : incoming) {
-                auto source = conn.from;
-                if (context.router.hasSignal(source)) {
-                    inputs.push_back(context.router.getSignal(source));
-                } else {
-                    inputs.push_back(0.0);
+            int maxPort = incoming.empty() ? -1 : incoming.back().toPort;
+            std::vector<double> inputs(static_cast<size_t>(maxPort + 1), 0.0);
+
+            for (const auto& conn : incoming){
+                if (context.router.hasSignal(conn.from)){
+                    inputs[static_cast<size_t>(conn.toPort)] =
+                        context.router.getSignal(conn.from);
                 }
             }
 
             double output = block->execute(inputs);
-
             context.router.setSignal(id, output);
 
-            std::cout << id << " : inputs=[";
-            for (size_t i = 0; i < inputs.size(); ++i) {
-                std::cout << inputs[i];
-                if (i + 1 < inputs.size()) {
-                    std::cout << ", ";
-                }
-            }
-            std::cout << "] output=" << output << std::endl;
+            json blockResult;
+            blockResult["id"]     = id;
+            blockResult["type"]   = block->getType();
+            blockResult["inputs"] = inputs;
+            blockResult["output"] = output;
+            tickResult["execution"].push_back(blockResult);
         }
 
-        std::cout << "=====================" << std::endl;
+        std::cout << tickResult.dump(4) << "\n";
     }
 
-}
+}

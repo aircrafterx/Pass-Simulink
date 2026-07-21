@@ -16,4 +16,19 @@ namespace pass::simulink{
         double val = inputs.empty() ? 0.0 : inputs[0];
         return val * gain;
     }
+
+    std::string GainBlock::getType() const{
+        return "Gain";
+    }
+
+    std::map<std::string, double> GainBlock::getParameters() const{
+        return { {"gain", gain} };
+    }
+
+    void GainBlock::setParameters(const std::map<std::string, double>& params){
+        auto it = params.find("gain");
+        if (it != params.end()){
+            gain = it->second;
+        }
+    }
 }

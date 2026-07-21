@@ -12,4 +12,8 @@ namespace pass::simulink{
         }
         return sum;
     }
+
+    std::string AddBlock::getType() const{
+        return "Add";
+    }
 }

@@ -1,0 +1,122 @@
+[
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\main.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\main.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/main.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\BlockManager.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\BlockManager.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/BlockManager.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/BlockManager.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\BlockFactory.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\BlockFactory.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/BlockFactory.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/BlockFactory.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\ClockBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\ClockBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/ClockBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/ClockBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\SineBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\SineBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/SineBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/SineBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\CosineBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\CosineBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/CosineBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/CosineBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\ScopeBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\ScopeBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/ScopeBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/ScopeBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\AddBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\AddBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/AddBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/AddBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\MultiplyBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\MultiplyBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/MultiplyBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/MultiplyBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\AverageBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\AverageBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/AverageBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/AverageBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\GainBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\GainBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/GainBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/GainBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\SubtractBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\SubtractBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/SubtractBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/SubtractBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\MinBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\MinBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/MinBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/MinBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Block\\MaxBlock.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Block\\MaxBlock.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Block/MaxBlock.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Block/MaxBlock.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Graph\\ConnectionManager.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Graph\\ConnectionManager.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Graph/ConnectionManager.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Graph/ConnectionManager.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Graph\\TopologicalSorter.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Graph\\TopologicalSorter.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Graph/TopologicalSorter.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Graph/TopologicalSorter.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Graph\\ProjectSerializer.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Graph\\ProjectSerializer.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Graph/ProjectSerializer.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Graph/ProjectSerializer.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Engine\\SignalRouter.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Engine\\SignalRouter.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Engine/SignalRouter.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/SignalRouter.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Engine\\GraphExecutionEngine.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Engine\\GraphExecutionEngine.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Engine/GraphExecutionEngine.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/GraphExecutionEngine.cpp.obj"
+},
+{
+  "directory": "D:/PASS-Simulink/build",
+  "command": "D:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles\\PASS_Simulink_Backend.dir\\includes_CXX.rsp -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles\\PASS_Simulink_Backend.dir\\src\\Engine\\SimulationScheduler.cpp.obj -c D:\\PASS-Simulink\\PASS-Backend\\src\\Engine\\SimulationScheduler.cpp",
+  "file": "D:/PASS-Simulink/PASS-Backend/src/Engine/SimulationScheduler.cpp",
+  "output": "CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/SimulationScheduler.cpp.obj"
+}
+]

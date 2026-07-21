@@ -10,12 +10,20 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(FetchContent)
+FetchContent_Declare(
+    json
+    URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+FetchContent_MakeAvailable(json)
+
 include_directories(include)
 
 set(SOURCES
     src/main.cpp
 
     src/Block/BlockManager.cpp
+    src/Block/BlockFactory.cpp
     src/Block/ClockBlock.cpp
     src/Block/SineBlock.cpp
     src/Block/CosineBlock.cpp
@@ -30,6 +38,7 @@ set(SOURCES
 
     src/Graph/ConnectionManager.cpp
     src/Graph/TopologicalSorter.cpp
+    src/Graph/ProjectSerializer.cpp
 
     src/Engine/SignalRouter.cpp
     src/Engine/GraphExecutionEngine.cpp
@@ -39,6 +48,12 @@ set(SOURCES
 add_executable(
     PASS_Simulink_Backend
     ${SOURCES}
+)
+
+target_link_libraries(
+    PASS_Simulink_Backend
+    PRIVATE
+    nlohmann_json::nlohmann_json
 )
 
 if(MSVC)

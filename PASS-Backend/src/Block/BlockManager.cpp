@@ -15,6 +15,14 @@ namespace pass::simulink{
         return true;
     }
 
+    bool BlockManager::removeBlock(const std::string& id){
+        return blocks.erase(id) > 0;
+    }
+
+    void BlockManager::clear(){
+        blocks.clear();
+    }
+
     Block *BlockManager::getBlock(const std::string &id){
         auto it = blocks.find(id);
 
@@ -32,4 +40,4 @@ namespace pass::simulink{
 
         return it->second.get();
     }
-}
+}

@@ -1,21 +1,25 @@
 #include "Engine/SimulationScheduler.hpp"
 #include "Block/ClockBlock.hpp"
-#include "Graph/TopologicalSorter.hpp"
+#include "Block/ScopeBlock.hpp"
+#include <nlohmann/json.hpp>
 #include <iostream>
+#include <cmath>
 
 namespace pass::simulink{
     SimulationScheduler::SimulationScheduler(GraphExecutionEngine& engine, double start, double end, double step)
         : engine(engine), startTime(start), endTime(end), stepSize(step){}
 
     void SimulationScheduler::run(){
-        // Pre-run cycle check to prevent looping on invalid graphs
-        auto order = TopologicalSorter::sort(engine.getBlockManager(), engine.getGraph());
-        if (order.size() < engine.getBlockManager().getBlocks().size()){
-            std::cout << "\nCycle detected. Simulation aborted.\n";
+        // Mark engine's cached order stale then do a single cycle check.
+        engine.invalidate();
+        if (!engine.prepare()){
+            nlohmann::json err;
+            err["error"] = "Cycle detected — simulation aborted";
+            std::cout << err.dump(4) << "\n";
             return;
         }
 
-        // Configure all Clock blocks using scheduler settings
+        // Reset all Clock blocks to start time and configure step size.
         for (const auto& pair : engine.getBlockManager().getBlocks()){
             if (auto* clockBlock = dynamic_cast<ClockBlock*>(pair.second.get())){
                 clockBlock->setStepSize(stepSize);
@@ -23,11 +27,18 @@ namespace pass::simulink{
             }
         }
 
-        double currentTime = startTime;
-        while (currentTime <= endTime + 1e-9){
-            std::cout << "\n--- Time Tick: " << currentTime << " ---\n";
-            engine.execute();
-            currentTime += stepSize;
+        // Reset all Scope blocks so repeated runs don't accumulate stale data.
+        for (const auto& pair : engine.getBlockManager().getBlocks()){
+            if (auto* scope = dynamic_cast<ScopeBlock*>(pair.second.get())){
+                scope->reset();
+            }
+        }
+
+        // Use integer tick counting to avoid floating-point drift.
+        int numSteps = static_cast<int>(std::round((endTime - startTime) / stepSize));
+        for (int i = 0; i <= numSteps; ++i){
+            double currentTime = startTime + i * stepSize;
+            engine.execute(i, currentTime);
         }
     }
 

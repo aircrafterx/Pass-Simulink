@@ -11,4 +11,8 @@ namespace pass::simulink{
         }
         return sum / static_cast<double>(inputs.size());
     }
+
+    std::string AverageBlock::getType() const{
+        return "Average";
+    }
 }

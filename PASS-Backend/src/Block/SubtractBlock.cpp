@@ -11,4 +11,8 @@ namespace pass::simulink{
         }
         return result;
     }
+
+    std::string SubtractBlock::getType() const{
+        return "Subtract";
+    }
 }
