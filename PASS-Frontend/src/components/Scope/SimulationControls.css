@@ -1,0 +1,52 @@
+/* SimulationControls.css */
+.sim-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-panel-2);
+  flex-shrink: 0;
+}
+
+.sim-controls__label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.sim-controls__field {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sim-controls__field label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.sim-controls__field input {
+  width: 72px;
+}
+
+.sim-controls__sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+}
+
+.sim-controls__spacer { flex: 1; }
+
+.sim-controls__error {
+  font-size: 11px;
+  color: var(--danger);
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

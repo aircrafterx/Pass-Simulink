@@ -418,6 +418,12 @@ PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/Signa
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/GraphExecutionEngine.cpp.obj
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/src/Engine/SimulationScheduler.cpp.obj
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/build.make
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libbrotlicommon.dll.a
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libbrotlienc.dll.a
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libbrotlidec.dll.a
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libz.dll.a
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libssl.dll.a
+PASS_Simulink_Backend.exe: D:/msys64/ucrt64/lib/libcrypto.dll.a
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/linkLibs.rsp
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/objects1.rsp
 PASS_Simulink_Backend.exe: CMakeFiles/PASS_Simulink_Backend.dir/link.txt

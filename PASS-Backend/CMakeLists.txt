@@ -11,11 +11,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
+
+# nlohmann/json
 FetchContent_Declare(
     json
     URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
 )
 FetchContent_MakeAvailable(json)
+
+# cpp-httplib (single-header HTTP server)
+FetchContent_Declare(
+    httplib
+    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+    GIT_TAG        v0.18.1
+)
+FetchContent_MakeAvailable(httplib)
 
 include_directories(include)
 
@@ -54,15 +64,20 @@ target_link_libraries(
     PASS_Simulink_Backend
     PRIVATE
     nlohmann_json::nlohmann_json
+    httplib::httplib
 )
+
+if(WIN32)
+    target_link_libraries(PASS_Simulink_Backend PRIVATE ws2_32)
+endif()
 
 if(MSVC)
     target_compile_options(
         PASS_Simulink_Backend
         PRIVATE
         /W4
+        /wd4702
     )
-
 else()
     target_compile_options(
         PASS_Simulink_Backend
@@ -71,5 +86,4 @@ else()
         -Wextra
         -Wpedantic
     )
-
 endif()

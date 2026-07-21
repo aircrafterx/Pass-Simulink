@@ -1,0 +1,148 @@
+/* BlockNode.css */
+
+/* ── Block node wrapper ──────────────────────────────────── */
+.block-node {
+  position: absolute;
+  user-select: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.block-node:active { cursor: grabbing; }
+
+.block-node__body {
+  position: relative;
+  min-width: 110px;
+  border-radius: var(--radius-md);
+  background: var(--bg-panel-2);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  overflow: visible;
+}
+
+.block-node--selected .block-node__body {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow), var(--shadow-md);
+}
+
+.block-node:hover .block-node__body {
+  border-color: var(--border-bright);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Header strip ────────────────────────────────────────── */
+.block-node__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 5px;
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.block-node__icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.block-node__type {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.block-node__delete {
+  opacity: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--danger);
+  font-size: 12px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  transition: opacity var(--t-fast);
+  line-height: 1;
+}
+
+.block-node:hover .block-node__delete,
+.block-node--selected .block-node__delete {
+  opacity: 1;
+}
+
+.block-node__delete:hover { background: var(--danger-dim); }
+
+/* ── ID label ────────────────────────────────────────────── */
+.block-node__id {
+  padding: 3px 10px 5px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+/* Color stripe at left edge by category */
+.block-node__body::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.block-node--Sources .block-node__body::before { background: var(--block-source); }
+.block-node--Math    .block-node__body::before { background: var(--block-math);   }
+.block-node--Sinks   .block-node__body::before { background: var(--block-sink);   }
+
+/* ── Port circles ────────────────────────────────────────── */
+.block-node__ports {
+  position: absolute;
+  top: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.block-node__ports--input  { left: -8px; }
+.block-node__ports--output { right: -8px; }
+
+.block-node__port {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-bright);
+  background: var(--bg-panel-3);
+  cursor: crosshair;
+  pointer-events: all;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  color: transparent;
+  flex-shrink: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.block-node__port:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.35);
+  color: #fff;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.block-node__port--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  animation: pulse 1s infinite;
+}

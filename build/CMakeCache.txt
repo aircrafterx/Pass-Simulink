@@ -14,6 +14,13 @@
 # EXTERNAL cache entries
 ########################
 
+//Build the library as a shared library instead of static. Has
+// no effect if using header-only.
+BUILD_SHARED_LIBS:BOOL=OFF
+
+//The path to Brotli's include directory.
+Brotli_INCLUDE_DIR:PATH=D:/msys64/ucrt64/include
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=D:/msys64/ucrt64/bin/addr2line.exe
 
@@ -290,6 +297,33 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Enable to build 7-Zip packages
+CPACK_BINARY_7Z:BOOL=OFF
+
+//Enable to build IFW packages
+CPACK_BINARY_IFW:BOOL=OFF
+
+//Enable to build Inno Setup packages
+CPACK_BINARY_INNOSETUP:BOOL=OFF
+
+//Enable to build NSIS packages
+CPACK_BINARY_NSIS:BOOL=ON
+
+//Enable to build NuGet packages
+CPACK_BINARY_NUGET:BOOL=OFF
+
+//Enable to build WiX packages
+CPACK_BINARY_WIX:BOOL=OFF
+
+//Enable to build ZIP packages
+CPACK_BINARY_ZIP:BOOL=OFF
+
+//Enable to build 7-Zip source packages
+CPACK_SOURCE_7Z:BOOL=ON
+
+//Enable to build ZIP source packages
+CPACK_SOURCE_ZIP:BOOL=ON
+
 //Directory under which to collect all populated content
 FETCHCONTENT_BASE_DIR:PATH=D:/PASS-Simulink/build/_deps
 
@@ -301,14 +335,58 @@ FETCHCONTENT_FULLY_DISCONNECTED:BOOL=OFF
 FETCHCONTENT_QUIET:BOOL=ON
 
 //When not empty, overrides where to find pre-populated content
+// for httplib
+FETCHCONTENT_SOURCE_DIR_HTTPLIB:PATH=
+
+//When not empty, overrides where to find pre-populated content
 // for json
 FETCHCONTENT_SOURCE_DIR_JSON:PATH=
 
 //Enables UPDATE_DISCONNECTED behavior for all content population
 FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 
+//Enables UPDATE_DISCONNECTED behavior just for population of httplib
+FETCHCONTENT_UPDATES_DISCONNECTED_HTTPLIB:BOOL=OFF
+
 //Enables UPDATE_DISCONNECTED behavior just for population of json
 FETCHCONTENT_UPDATES_DISCONNECTED_JSON:BOOL=OFF
+
+//Git command line client
+GIT_EXECUTABLE:FILEPATH=C:/Program Files/Git/cmd/git.exe
+
+//If ON, uses a Python script to split the header into a compilable
+// header & source file (requires Python v3).
+HTTPLIB_COMPILE:BOOL=OFF
+
+//Enables the installation target
+HTTPLIB_INSTALL:BOOL=ON
+
+//Disable the use of C++ exceptions
+HTTPLIB_NO_EXCEPTIONS:BOOL=OFF
+
+//Requires Brotli to be found & linked, or fails build.
+HTTPLIB_REQUIRE_BROTLI:BOOL=OFF
+
+//Requires OpenSSL to be found & linked, or fails build.
+HTTPLIB_REQUIRE_OPENSSL:BOOL=OFF
+
+//Requires ZLIB to be found & linked, or fails build.
+HTTPLIB_REQUIRE_ZLIB:BOOL=OFF
+
+//Enables testing and builds tests
+HTTPLIB_TEST:BOOL=OFF
+
+//Uses Brotli (if available) to enable Brotli decompression support.
+HTTPLIB_USE_BROTLI_IF_AVAILABLE:BOOL=ON
+
+//Enable feature to load system certs from the Apple Keychain.
+HTTPLIB_USE_CERTS_FROM_MACOSX_KEYCHAIN:BOOL=ON
+
+//Uses OpenSSL (if available) to enable HTTPS support.
+HTTPLIB_USE_OPENSSL_IF_AVAILABLE:BOOL=ON
+
+//Uses ZLIB (if available) to enable Zlib compression support.
+HTTPLIB_USE_ZLIB_IF_AVAILABLE:BOOL=ON
 
 //Build the unit tests when BUILD_TESTING is enabled.
 JSON_BuildTests:BOOL=OFF
@@ -340,6 +418,12 @@ JSON_MultipleHeaders:BOOL=ON
 //Include as system headers (skip for clang-tidy).
 JSON_SystemInclude:BOOL=OFF
 
+//Path to a library.
+LIB_EAY:FILEPATH=D:/msys64/ucrt64/lib/libcrypto.dll.a
+
+//Path to a file.
+OPENSSL_INCLUDE_DIR:PATH=D:/msys64/ucrt64/include
+
 //Value Computed by CMake
 PASS_Simulink_Backend_BINARY_DIR:STATIC=D:/PASS-Simulink/build
 
@@ -348,6 +432,33 @@ PASS_Simulink_Backend_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 PASS_Simulink_Backend_SOURCE_DIR:STATIC=D:/PASS-Simulink/PASS-Backend
+
+//Arguments to supply to pkg-config
+PKG_CONFIG_ARGN:STRING=
+
+//pkg-config executable
+PKG_CONFIG_EXECUTABLE:FILEPATH=D:/msys64/ucrt64/bin/pkg-config.exe
+
+//Path to a library.
+SSL_EAY:FILEPATH=D:/msys64/ucrt64/lib/libssl.dll.a
+
+//Path to a file.
+ZLIB_INCLUDE_DIR:PATH=D:/msys64/ucrt64/include
+
+//Path to a library.
+ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+ZLIB_LIBRARY_RELEASE:FILEPATH=D:/msys64/ucrt64/lib/libz.dll.a
+
+//Value Computed by CMake
+httplib_BINARY_DIR:STATIC=D:/PASS-Simulink/build/_deps/httplib-build
+
+//Value Computed by CMake
+httplib_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+httplib_SOURCE_DIR:STATIC=D:/PASS-Simulink/build/_deps/httplib-src
 
 //Value Computed by CMake
 nlohmann_json_BINARY_DIR:STATIC=D:/PASS-Simulink/build/_deps/json-build
@@ -358,11 +469,127 @@ nlohmann_json_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 nlohmann_json_SOURCE_DIR:STATIC=D:/PASS-Simulink/build/_deps/json-src
 
+//Path to a library.
+pkgcfg_lib_Brotli_common_brotlicommon:FILEPATH=D:/msys64/ucrt64/lib/libbrotlicommon.dll.a
+
+//Path to a library.
+pkgcfg_lib_Brotli_decoder_brotlidec:FILEPATH=D:/msys64/ucrt64/lib/libbrotlidec.dll.a
+
+//Path to a library.
+pkgcfg_lib_Brotli_encoder_brotlienc:FILEPATH=D:/msys64/ucrt64/lib/libbrotlienc.dll.a
+
 
 ########################
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Brotli_INCLUDE_DIR
+Brotli_INCLUDE_DIR-ADVANCED:INTERNAL=1
+Brotli_common_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_common_CFLAGS_I:INTERNAL=
+Brotli_common_CFLAGS_OTHER:INTERNAL=
+Brotli_common_FOUND:INTERNAL=1
+Brotli_common_INCLUDEDIR:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_common_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_common_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlicommon
+Brotli_common_LDFLAGS_OTHER:INTERNAL=
+Brotli_common_LIBDIR:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_common_LIBRARIES:INTERNAL=brotlicommon
+Brotli_common_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_common_LIBS:INTERNAL=
+Brotli_common_LIBS_L:INTERNAL=
+Brotli_common_LIBS_OTHER:INTERNAL=
+Brotli_common_LIBS_PATHS:INTERNAL=
+Brotli_common_MODULE_NAME:INTERNAL=libbrotlicommon
+Brotli_common_PREFIX:INTERNAL=D:/msys64/ucrt64/bin/..
+Brotli_common_STATIC_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_common_STATIC_CFLAGS_I:INTERNAL=
+Brotli_common_STATIC_CFLAGS_OTHER:INTERNAL=
+Brotli_common_STATIC_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_common_STATIC_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlicommon
+Brotli_common_STATIC_LDFLAGS_OTHER:INTERNAL=
+Brotli_common_STATIC_LIBDIR:INTERNAL=
+Brotli_common_STATIC_LIBRARIES:INTERNAL=brotlicommon
+Brotli_common_STATIC_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_common_STATIC_LIBS:INTERNAL=
+Brotli_common_STATIC_LIBS_L:INTERNAL=
+Brotli_common_STATIC_LIBS_OTHER:INTERNAL=
+Brotli_common_STATIC_LIBS_PATHS:INTERNAL=
+Brotli_common_VERSION:INTERNAL=1.2.0
+Brotli_common_libbrotlicommon_INCLUDEDIR:INTERNAL=
+Brotli_common_libbrotlicommon_LIBDIR:INTERNAL=
+Brotli_common_libbrotlicommon_PREFIX:INTERNAL=
+Brotli_common_libbrotlicommon_VERSION:INTERNAL=
+Brotli_decoder_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_decoder_CFLAGS_I:INTERNAL=
+Brotli_decoder_CFLAGS_OTHER:INTERNAL=
+Brotli_decoder_FOUND:INTERNAL=1
+Brotli_decoder_INCLUDEDIR:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_decoder_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_decoder_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlidec
+Brotli_decoder_LDFLAGS_OTHER:INTERNAL=
+Brotli_decoder_LIBDIR:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_decoder_LIBRARIES:INTERNAL=brotlidec
+Brotli_decoder_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_decoder_LIBS:INTERNAL=
+Brotli_decoder_LIBS_L:INTERNAL=
+Brotli_decoder_LIBS_OTHER:INTERNAL=
+Brotli_decoder_LIBS_PATHS:INTERNAL=
+Brotli_decoder_MODULE_NAME:INTERNAL=libbrotlidec
+Brotli_decoder_PREFIX:INTERNAL=D:/msys64/ucrt64/bin/..
+Brotli_decoder_STATIC_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_decoder_STATIC_CFLAGS_I:INTERNAL=
+Brotli_decoder_STATIC_CFLAGS_OTHER:INTERNAL=
+Brotli_decoder_STATIC_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_decoder_STATIC_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlidec;-lbrotlicommon
+Brotli_decoder_STATIC_LDFLAGS_OTHER:INTERNAL=
+Brotli_decoder_STATIC_LIBDIR:INTERNAL=
+Brotli_decoder_STATIC_LIBRARIES:INTERNAL=brotlidec;brotlicommon
+Brotli_decoder_STATIC_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_decoder_STATIC_LIBS:INTERNAL=
+Brotli_decoder_STATIC_LIBS_L:INTERNAL=
+Brotli_decoder_STATIC_LIBS_OTHER:INTERNAL=
+Brotli_decoder_STATIC_LIBS_PATHS:INTERNAL=
+Brotli_decoder_VERSION:INTERNAL=1.2.0
+Brotli_decoder_libbrotlidec_INCLUDEDIR:INTERNAL=
+Brotli_decoder_libbrotlidec_LIBDIR:INTERNAL=
+Brotli_decoder_libbrotlidec_PREFIX:INTERNAL=
+Brotli_decoder_libbrotlidec_VERSION:INTERNAL=
+Brotli_encoder_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_encoder_CFLAGS_I:INTERNAL=
+Brotli_encoder_CFLAGS_OTHER:INTERNAL=
+Brotli_encoder_FOUND:INTERNAL=1
+Brotli_encoder_INCLUDEDIR:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_encoder_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_encoder_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlienc
+Brotli_encoder_LDFLAGS_OTHER:INTERNAL=
+Brotli_encoder_LIBDIR:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_encoder_LIBRARIES:INTERNAL=brotlienc
+Brotli_encoder_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_encoder_LIBS:INTERNAL=
+Brotli_encoder_LIBS_L:INTERNAL=
+Brotli_encoder_LIBS_OTHER:INTERNAL=
+Brotli_encoder_LIBS_PATHS:INTERNAL=
+Brotli_encoder_MODULE_NAME:INTERNAL=libbrotlienc
+Brotli_encoder_PREFIX:INTERNAL=D:/msys64/ucrt64/bin/..
+Brotli_encoder_STATIC_CFLAGS:INTERNAL=-ID:/msys64/ucrt64/bin/../include
+Brotli_encoder_STATIC_CFLAGS_I:INTERNAL=
+Brotli_encoder_STATIC_CFLAGS_OTHER:INTERNAL=
+Brotli_encoder_STATIC_INCLUDE_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../include
+Brotli_encoder_STATIC_LDFLAGS:INTERNAL=-LD:/msys64/ucrt64/bin/../lib;-lbrotlienc;-lbrotlicommon
+Brotli_encoder_STATIC_LDFLAGS_OTHER:INTERNAL=
+Brotli_encoder_STATIC_LIBDIR:INTERNAL=
+Brotli_encoder_STATIC_LIBRARIES:INTERNAL=brotlienc;brotlicommon
+Brotli_encoder_STATIC_LIBRARY_DIRS:INTERNAL=D:/msys64/ucrt64/bin/../lib
+Brotli_encoder_STATIC_LIBS:INTERNAL=
+Brotli_encoder_STATIC_LIBS_L:INTERNAL=
+Brotli_encoder_STATIC_LIBS_OTHER:INTERNAL=
+Brotli_encoder_STATIC_LIBS_PATHS:INTERNAL=
+Brotli_encoder_VERSION:INTERNAL=1.2.0
+Brotli_encoder_libbrotlienc_INCLUDEDIR:INTERNAL=
+Brotli_encoder_libbrotlienc_LIBDIR:INTERNAL=
+Brotli_encoder_libbrotlienc_PREFIX:INTERNAL=
+Brotli_encoder_libbrotlienc_VERSION:INTERNAL=
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -430,6 +657,8 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Test CMAKE_HAVE_LIBC_PTHREAD
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=D:/PASS-Simulink/PASS-Backend
@@ -484,7 +713,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -542,7 +771,58 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Deprecated.  Use -W[no-]deprecated instead.
 CMAKE_WARN_DEPRECATED:INTERNAL=ON
+//ADVANCED property for variable: CPACK_BINARY_7Z
+CPACK_BINARY_7Z-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_IFW
+CPACK_BINARY_IFW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_INNOSETUP
+CPACK_BINARY_INNOSETUP-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_NSIS
+CPACK_BINARY_NSIS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_NUGET
+CPACK_BINARY_NUGET-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_WIX
+CPACK_BINARY_WIX-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_BINARY_ZIP
+CPACK_BINARY_ZIP-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_SOURCE_7Z
+CPACK_SOURCE_7Z-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CPACK_SOURCE_ZIP
+CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//ADVANCED property for variable: GIT_EXECUTABLE
+GIT_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: LIB_EAY
+LIB_EAY-ADVANCED:INTERNAL=1
 NLOHMANN_JSON_CONFIG_INSTALL_DIR:INTERNAL=share/cmake/nlohmann_json
+//ADVANCED property for variable: OPENSSL_INCLUDE_DIR
+OPENSSL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PKG_CONFIG_ARGN
+PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
+PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SSL_EAY
+SSL_EAY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_INCLUDE_DIR
+ZLIB_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_DEBUG
+ZLIB_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_RELEASE
+ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/PASS_Simulink_Backend
+__pkg_config_arguments_Brotli_common:INTERNAL=QUIET;GLOBAL;IMPORTED_TARGET;libbrotlicommon
+__pkg_config_arguments_Brotli_decoder:INTERNAL=QUIET;GLOBAL;IMPORTED_TARGET;libbrotlidec
+__pkg_config_arguments_Brotli_encoder:INTERNAL=QUIET;GLOBAL;IMPORTED_TARGET;libbrotlienc
+__pkg_config_checked_Brotli_common:INTERNAL=1
+__pkg_config_checked_Brotli_decoder:INTERNAL=1
+__pkg_config_checked_Brotli_encoder:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_Brotli_common_brotlicommon
+pkgcfg_lib_Brotli_common_brotlicommon-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_Brotli_decoder_brotlidec
+pkgcfg_lib_Brotli_decoder_brotlidec-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_Brotli_encoder_brotlienc
+pkgcfg_lib_Brotli_encoder_brotlienc-ADVANCED:INTERNAL=1
+prefix_result:INTERNAL=D:/msys64/ucrt64/bin/../lib
 

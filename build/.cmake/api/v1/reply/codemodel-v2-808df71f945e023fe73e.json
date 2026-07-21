@@ -1,0 +1,230 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Git::Git::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Git__Git-Debug-7a3e225ea3290ed753e9.json",
+					"name" : "Git::Git",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "OpenSSL::Crypto::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-OpenSSL__Crypto-Debug-6d33c33552030437729b.json",
+					"name" : "OpenSSL::Crypto",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "OpenSSL::SSL::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-OpenSSL__SSL-Debug-cc9cbb93af04b67dfd26.json",
+					"name" : "OpenSSL::SSL",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "OpenSSL::applink::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-OpenSSL__applink-Debug-7fc73a2df6b542cc6ad2.json",
+					"name" : "OpenSSL::applink",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "PkgConfig::Brotli_common::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-PkgConfig__Brotli_common-Debug-c9a1852dff0193f60d5b.json",
+					"name" : "PkgConfig::Brotli_common",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "PkgConfig::Brotli_decoder::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-PkgConfig__Brotli_decoder-Debug-7c435f63a2bfd719ec85.json",
+					"name" : "PkgConfig::Brotli_decoder",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "PkgConfig::Brotli_encoder::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-PkgConfig__Brotli_encoder-Debug-c3d442de9ee3c31833af.json",
+					"name" : "PkgConfig::Brotli_encoder",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Threads::Threads::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-Threads__Threads-Debug-1021b25c310e155042ec.json",
+					"name" : "Threads::Threads",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ZLIB::ZLIB::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-ZLIB__ZLIB-Debug-57aade4f7810c88ee0f5.json",
+					"name" : "ZLIB::ZLIB",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "httplib::@e981bf9b2240fb44b2eb",
+					"jsonFile" : "target-httplib-Debug-d53365431b48be967920.json",
+					"name" : "httplib",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "nlohmann_json::@1f73e43ed239fe3d59ae",
+					"jsonFile" : "target-nlohmann_json-Debug-548e4aef3679c1e2d6ed.json",
+					"name" : "nlohmann_json",
+					"projectIndex" : 1
+				}
+			],
+			"directories" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-b5805d5c08fd3d92def4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						10
+					],
+					"build" : "_deps/json-build",
+					"jsonFile" : "directory-_deps.json-build-Debug-8e4c4067812b3fd585c4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "D:/PASS-Simulink/build/_deps/json-src"
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					],
+					"build" : "_deps/httplib-build",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-_deps.httplib-build-Debug-31885f3c2d1e5b075de5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "D:/PASS-Simulink/build/_deps/httplib-src"
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PASS_Simulink_Backend",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						10
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "nlohmann_json",
+					"parentIndex" : 0
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					],
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "httplib",
+					"parentIndex" : 0
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "PASS_Simulink_Backend::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PASS_Simulink_Backend-Debug-45b30331ff1e9e7b91df.json",
+					"name" : "PASS_Simulink_Backend",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/PASS-Simulink/build",
+		"source" : "D:/PASS-Simulink/PASS-Backend"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 11
+	}
+}

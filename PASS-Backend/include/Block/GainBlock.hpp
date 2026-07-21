@@ -9,7 +9,7 @@ namespace pass::simulink{
         public:
             GainBlock();
             explicit GainBlock(double gainValue);
-            
+
             void setGain(double gainValue);
             double getGain() const;
 

@@ -13,21 +13,21 @@ namespace pass::simulink{
 
     }
 
-    // -----------------------------------------------------------------------
-    // prepare() — run Kahn's sort once; cache the result.
-    // Returns false if a cycle is detected (order.size() < block count).
-    // -----------------------------------------------------------------------
+
+
+
+
     bool GraphExecutionEngine::prepare(){
         cachedOrder = TopologicalSorter::sort(blockManager, graph);
         dirty = false;
         return cachedOrder.size() == blockManager.getBlocks().size();
     }
 
-    // -----------------------------------------------------------------------
-    // execute() — one simulation tick; output is a single JSON object.
-    // -----------------------------------------------------------------------
+
+
+
     void GraphExecutionEngine::execute(int tickIndex, double time){
-        // Re-sort only if the graph changed since last prepare().
+
         if (dirty){
             if (!prepare()){
                 json err;
@@ -48,7 +48,7 @@ namespace pass::simulink{
             Block* block = blockManager.getBlock(id);
             if (block == nullptr) continue;
 
-            // Gather incoming connections, sorted by toPort for deterministic order.
+
             auto incoming = graph.incoming(id);
             std::sort(incoming.begin(), incoming.end(),
                       [](const Connection& a, const Connection& b){

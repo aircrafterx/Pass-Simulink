@@ -12,7 +12,7 @@ namespace pass::simulink{
             ClockBlock();
             double execute(const std::vector<double>& inputs) override;
             std::string getType() const override;
-            
+
             void setStepSize(double step);
             void setCurrentTime(double time);
 

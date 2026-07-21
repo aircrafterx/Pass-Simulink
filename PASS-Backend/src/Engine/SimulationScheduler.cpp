@@ -10,7 +10,7 @@ namespace pass::simulink{
         : engine(engine), startTime(start), endTime(end), stepSize(step){}
 
     void SimulationScheduler::run(){
-        // Mark engine's cached order stale then do a single cycle check.
+
         engine.invalidate();
         if (!engine.prepare()){
             nlohmann::json err;
@@ -19,7 +19,7 @@ namespace pass::simulink{
             return;
         }
 
-        // Reset all Clock blocks to start time and configure step size.
+
         for (const auto& pair : engine.getBlockManager().getBlocks()){
             if (auto* clockBlock = dynamic_cast<ClockBlock*>(pair.second.get())){
                 clockBlock->setStepSize(stepSize);
@@ -27,14 +27,14 @@ namespace pass::simulink{
             }
         }
 
-        // Reset all Scope blocks so repeated runs don't accumulate stale data.
+
         for (const auto& pair : engine.getBlockManager().getBlocks()){
             if (auto* scope = dynamic_cast<ScopeBlock*>(pair.second.get())){
                 scope->reset();
             }
         }
 
-        // Use integer tick counting to avoid floating-point drift.
+
         int numSteps = static_cast<int>(std::round((endTime - startTime) / stepSize));
         for (int i = 0; i <= numSteps; ++i){
             double currentTime = startTime + i * stepSize;

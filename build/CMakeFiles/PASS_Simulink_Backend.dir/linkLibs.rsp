@@ -1,1 +1,1 @@
- -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
+ -lws2_32 -lcrypt32 D:/msys64/ucrt64/lib/libbrotlicommon.dll.a D:/msys64/ucrt64/lib/libbrotlienc.dll.a D:/msys64/ucrt64/lib/libbrotlidec.dll.a D:/msys64/ucrt64/lib/libz.dll.a D:/msys64/ucrt64/lib/libssl.dll.a D:/msys64/ucrt64/lib/libcrypto.dll.a -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

@@ -1,0 +1,55 @@
+/* Editor.css */
+.editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor__workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.editor__center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Notification toast ──────────────────────────────────── */
+.editor__toast {
+  position: fixed;
+  bottom: 260px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  animation: fadeIn var(--t-med) both;
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+
+.editor__toast--info {
+  background: var(--bg-panel-3);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.editor__toast--success {
+  background: var(--success-dim);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+
+.editor__toast--error {
+  background: var(--danger-dim);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}

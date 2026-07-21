@@ -1,165 +1,296 @@
+
+
+
+
+
+
+
+
+
+
+
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <memory>
+#include <vector>
+#include <map>
+#include <cmath>
+
+
+#include <nlohmann/json.hpp>
+
+
+#include <httplib.h>
+
 
 #include "Block/BlockManager.hpp"
+#include "Block/BlockFactory.hpp"
 #include "Block/ClockBlock.hpp"
-#include "Block/SineBlock.hpp"
-#include "Block/CosineBlock.hpp"
 #include "Block/ScopeBlock.hpp"
-#include "Block/AddBlock.hpp"
-#include "Block/MultiplyBlock.hpp"
-#include "Block/GainBlock.hpp"
 
 #include "Graph/ConnectionManager.hpp"
+#include "Graph/ProjectSerializer.hpp"
 
 #include "Engine/GraphExecutionEngine.hpp"
 #include "Engine/SimulationScheduler.hpp"
 
-#include "Graph/ProjectSerializer.hpp"
-
-#include <nlohmann/json.hpp>
-
 using namespace pass::simulink;
 using json = nlohmann::json;
 
-int main(){
-    BlockManager blockManager;
 
-    auto clock = std::make_unique<ClockBlock>();
-    clock->setId("Clock_1");
 
-    auto sine = std::make_unique<SineBlock>();
-    sine->setId("Sine_1");
+static const std::string PROJECT_FILE = "project.json";
+static const int         SERVER_PORT  = 8085;
 
-    auto add = std::make_unique<AddBlock>();
-    add->setId("Add_1");
 
-    auto gain = std::make_unique<GainBlock>(2.0);
-    gain->setId("Gain_1");
+static void addCorsHeaders(httplib::Response& res)
+{
+    res.set_header("Access-Control-Allow-Origin",  "*");
+    res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.set_header("Access-Control-Allow-Headers", "Content-Type");
+}
 
-    auto scope = std::make_unique<ScopeBlock>();
-    scope->setId("Scope_1");
+static void jsonResponse(httplib::Response& res, int status, const json& body)
+{
+    addCorsHeaders(res);
+    res.status       = status;
+    res.set_content(body.dump(2), "application/json");
+}
 
-    blockManager.addBlock(std::move(clock));
-    blockManager.addBlock(std::move(sine));
-    blockManager.addBlock(std::move(add));
-    blockManager.addBlock(std::move(gain));
-    blockManager.addBlock(std::move(scope));
 
+
+
+
+static json buildCatalog()
+{
+    json catalog = json::array();
+
+    auto entry = [&](const std::string& type,
+                     const std::string& category,
+                     int inputs, int outputs,
+                     json defaultParams)
+    {
+        json e;
+        e["type"]          = type;
+        e["category"]      = category;
+        e["inputs"]        = inputs;
+        e["outputs"]       = outputs;
+        e["defaultParams"] = defaultParams;
+        catalog.push_back(e);
+    };
+
+    entry("Clock",    "Sources", 0, 1, { {"stepSize", 1.0} });
+    entry("Sine",     "Sources", 1, 1, { {"amplitude", 1.0}, {"frequency", 1.0}, {"phaseOffset", 0.0} });
+    entry("Cosine",   "Sources", 1, 1, { {"amplitude", 1.0}, {"frequency", 1.0}, {"phaseOffset", 0.0} });
+    entry("Gain",     "Math",    1, 1, { {"gain", 1.0} });
+    entry("Add",      "Math",    2, 1, json::object());
+    entry("Subtract", "Math",    2, 1, json::object());
+    entry("Multiply", "Math",    2, 1, json::object());
+    entry("Average",  "Math",    2, 1, json::object());
+    entry("Min",      "Math",    2, 1, json::object());
+    entry("Max",      "Math",    2, 1, json::object());
+    entry("Scope",    "Sinks",   1, 0, json::object());
+
+    return catalog;
+}
+
+
+
+
+
+static json runSimulation(const json& project)
+{
+    BlockManager      blockManager;
     ConnectionManager graph;
 
-    // Clock_1 -> Sine_1  (Sine only has one input, port 0)
-    graph.connect(blockManager, "Clock_1", "Sine_1", 0, 0);
-    // Clock_1 -> Add_1   (port 0 of Add_1)
-    graph.connect(blockManager, "Clock_1", "Add_1",  0, 0);
-    // Sine_1  -> Add_1   (port 1 of Add_1)
-    graph.connect(blockManager, "Sine_1",  "Add_1",  0, 1);
-    // Add_1  -> Gain_1
-    graph.connect(blockManager, "Add_1",   "Gain_1", 0, 0);
-    // Gain_1 -> Scope_1
-    graph.connect(blockManager, "Gain_1",  "Scope_1", 0, 0);
 
-    // --- Print connections as JSON ---
-    {
-        json connList = json::array();
-        for (const auto& c : graph.getConnections()){
-            json entry;
-            entry["from"]     = c.from;
-            entry["fromPort"] = c.fromPort;
-            entry["to"]       = c.to;
-            entry["toPort"]   = c.toPort;
-            connList.push_back(entry);
+    if (!project.contains("blocks") || !project["blocks"].is_array()) {
+        return { {"error", "Missing 'blocks' array"} };
+    }
+    for (const auto& entry : project["blocks"]) {
+        std::string type = entry.value("type", "");
+        std::string id   = entry.value("id",   "");
+        double x         = entry.value("x",    0.0);
+        double y         = entry.value("y",    0.0);
+
+        auto block = BlockFactory::createBlock(type);
+        if (!block) continue;
+
+        block->setId(id);
+        block->setX(x);
+        block->setY(y);
+
+        if (entry.contains("params") && entry["params"].is_object()) {
+            std::map<std::string,double> pm;
+            for (const auto& [k, v] : entry["params"].items())
+                if (v.is_number()) pm[k] = v.get<double>();
+            block->setParameters(pm);
         }
-        json out;
-        out["event"]       = "graph_built";
-        out["connections"] = connList;
-        std::cout << out.dump(4) << "\n";
+        blockManager.addBlock(std::move(block));
+    }
+
+
+    if (!project.contains("connections") || !project["connections"].is_array()) {
+        return { {"error", "Missing 'connections' array"} };
+    }
+    for (const auto& entry : project["connections"]) {
+        std::string from = entry.value("from", "");
+        std::string to   = entry.value("to",   "");
+        int fromPort     = entry.value("fromPort", 0);
+        int toPort       = entry.value("toPort",   0);
+        graph.connect(blockManager, from, to, fromPort, toPort);
+    }
+
+
+    double startTime = 0.0, endTime = 10.0, stepSize = 0.1;
+    if (project.contains("settings") && project["settings"].is_object()) {
+        const auto& s = project["settings"];
+        startTime = s.value("startTime", 0.0);
+        endTime   = s.value("endTime",   10.0);
+        stepSize  = s.value("stepSize",  0.1);
     }
 
     GraphExecutionEngine engine(blockManager, graph);
-    SimulationScheduler scheduler(engine, 0.0, 1.0, 0.2);
+    SimulationScheduler scheduler(engine, startTime, endTime, stepSize);
 
-    // --- Print simulation start as JSON ---
-    {
-        json out;
-        out["event"]     = "simulation_start";
-        out["startTime"] = scheduler.getStartTime();
-        out["endTime"]   = scheduler.getEndTime();
-        out["stepSize"]  = scheduler.getStepSize();
-        std::cout << out.dump(4) << "\n";
-    }
+
+    std::ostringstream tickBuffer;
+    std::streambuf* origBuf = std::cout.rdbuf(tickBuffer.rdbuf());
 
     scheduler.run();
 
-    // --- Print scope results as JSON ---
-    {
-        const auto* scopePtr = dynamic_cast<const ScopeBlock*>(blockManager.getBlock("Scope_1"));
-        json out;
-        out["event"]  = "simulation_end";
-        out["scope"]  = "Scope_1";
-        out["values"] = scopePtr ? scopePtr->getValues() : std::vector<double>{};
-        std::cout << out.dump(4) << "\n";
-    }
+    std::cout.rdbuf(origBuf);
 
-    // ==========================================================
-    // JSON SAVE / LOAD
-    // ==========================================================
-    const std::string projectFile = "project.json";
 
-    bool saved = ProjectSerializer::saveToFile(projectFile, blockManager, graph, scheduler);
-    {
-        json out;
-        out["event"]  = saved ? "save_ok" : "save_failed";
-        out["file"]   = projectFile;
-        std::cout << out.dump(4) << "\n";
-    }
-    if (!saved) return 1;
-
-    // --- Load into fresh objects ---
-    BlockManager      bm2;
-    ConnectionManager g2;
-    GraphExecutionEngine engine2(bm2, g2);
-    SimulationScheduler  scheduler2(engine2, 0.0, 0.0, 1.0);
-
-    bool loaded = ProjectSerializer::loadFromFile(projectFile, bm2, g2, scheduler2);
-    {
-        json out;
-        out["event"] = loaded ? "load_ok" : "load_failed";
-        out["file"]  = projectFile;
-        if (loaded){
-            out["startTime"] = scheduler2.getStartTime();
-            out["endTime"]   = scheduler2.getEndTime();
-            out["stepSize"]  = scheduler2.getStepSize();
+    json scopeResults = json::object();
+    for (const auto& [id, block] : blockManager.getBlocks()) {
+        if (block->getType() == "Scope") {
+            const auto* scope = dynamic_cast<const ScopeBlock*>(block.get());
+            if (scope) {
+                scopeResults[id] = scope->getValues();
+            }
         }
-        std::cout << out.dump(4) << "\n";
-    }
-    if (!loaded) return 1;
-
-    // --- Re-run from loaded project ---
-    {
-        json out;
-        out["event"] = "rerun_start";
-        out["source"] = projectFile;
-        std::cout << out.dump(4) << "\n";
     }
 
-    scheduler2.run();
 
-    // --- Print loaded scope results as JSON ---
-    {
-        const auto* scopePtr2 = dynamic_cast<const ScopeBlock*>(bm2.getBlock("Scope_1"));
-        json out;
-        out["event"]  = "rerun_end";
-        out["scope"]  = "Scope_1";
-        out["values"] = scopePtr2 ? scopePtr2->getValues() : std::vector<double>{};
-        std::cout << out.dump(4) << "\n";
+    json ticks = json::array();
+    std::istringstream stream(tickBuffer.str());
+    std::string line;
+    std::string accumulated;
+    int braceDepth = 0;
+
+    for (std::string rawLine; std::getline(stream, rawLine); ) {
+        accumulated += rawLine + "\n";
+        for (char ch : rawLine) {
+            if (ch == '{') braceDepth++;
+            if (ch == '}') braceDepth--;
+        }
+        if (braceDepth == 0 && !accumulated.empty()) {
+            try {
+                json obj = json::parse(accumulated);
+                if (obj.contains("tick")) {
+                    ticks.push_back(obj);
+                }
+            } catch (...) {}
+            accumulated.clear();
+        }
     }
 
-    {
-        json out;
-        out["event"]  = "round_trip_complete";
-        out["status"] = "ok";
-        std::cout << out.dump(4) << "\n";
+    json result;
+    result["status"]    = "ok";
+    result["startTime"] = startTime;
+    result["endTime"]   = endTime;
+    result["stepSize"]  = stepSize;
+    result["ticks"]     = ticks;
+    result["scopes"]    = scopeResults;
+    return result;
+}
+
+
+
+int main()
+{
+    httplib::Server svr;
+
+    std::cout << "[PASS-Backend] Starting HTTP API server on port "
+              << SERVER_PORT << " ...\n";
+
+
+    svr.Options(".*", [](const httplib::Request&, httplib::Response& res) {
+        addCorsHeaders(res);
+        res.status = 204;
+    });
+
+
+    svr.Get("/api/blocks/catalog", [](const httplib::Request&, httplib::Response& res) {
+        jsonResponse(res, 200, buildCatalog());
+    });
+
+
+    svr.Post("/api/simulate", [](const httplib::Request& req, httplib::Response& res) {
+        json project;
+        try {
+            project = json::parse(req.body);
+        } catch (const json::parse_error& e) {
+            jsonResponse(res, 400, { {"error", std::string("JSON parse error: ") + e.what()} });
+            return;
+        }
+
+        json result = runSimulation(project);
+        int  status = result.contains("error") ? 422 : 200;
+        jsonResponse(res, status, result);
+    });
+
+
+    svr.Post("/api/save", [](const httplib::Request& req, httplib::Response& res) {
+        json project;
+        try {
+            project = json::parse(req.body);
+        } catch (const json::parse_error& e) {
+            jsonResponse(res, 400, { {"error", std::string("JSON parse error: ") + e.what()} });
+            return;
+        }
+
+        std::ofstream file(PROJECT_FILE);
+        if (!file.is_open()) {
+            jsonResponse(res, 500, { {"error", "Cannot write " + PROJECT_FILE} });
+            return;
+        }
+        file << project.dump(4);
+        file.close();
+        jsonResponse(res, 200, { {"status", "saved"}, {"file", PROJECT_FILE} });
+    });
+
+
+    svr.Get("/api/load", [](const httplib::Request&, httplib::Response& res) {
+        std::ifstream file(PROJECT_FILE);
+        if (!file.is_open()) {
+            jsonResponse(res, 404, { {"error", "No saved project found"} });
+            return;
+        }
+        json project;
+        try {
+            file >> project;
+        } catch (const json::parse_error& e) {
+            jsonResponse(res, 500, { {"error", std::string("JSON parse error: ") + e.what()} });
+            return;
+        }
+        jsonResponse(res, 200, project);
+    });
+
+
+    std::cout << "[PASS-Backend] Ready. Listening on http://localhost:"
+              << SERVER_PORT << "\n";
+    std::cout << "[PASS-Backend] Endpoints:\n"
+              << "   GET  /api/blocks/catalog\n"
+              << "   POST /api/simulate\n"
+              << "   POST /api/save\n"
+              << "   GET  /api/load\n";
+
+    if (!svr.listen("0.0.0.0", SERVER_PORT)) {
+        std::cerr << "[PASS-Backend] ERROR: Failed to bind port " << SERVER_PORT << "\n";
+        return 1;
     }
 
     return 0;

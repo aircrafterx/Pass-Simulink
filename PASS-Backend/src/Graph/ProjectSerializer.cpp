@@ -9,10 +9,10 @@ using json = nlohmann::json;
 
 namespace pass::simulink{
 
-    // -------------------------------------------------------------------------
-    // saveToFile
-    // Serializes the entire project (blocks + connections + settings) to JSON.
-    // -------------------------------------------------------------------------
+
+
+
+
     bool ProjectSerializer::saveToFile(const std::string& filename,
                                        const BlockManager& blocks,
                                        const ConnectionManager& graph,
@@ -20,7 +20,7 @@ namespace pass::simulink{
     {
         json project;
 
-        // --- Blocks ---
+
         json blocksArray = json::array();
         for (const auto& [id, block] : blocks.getBlocks()){
             json entry;
@@ -29,7 +29,7 @@ namespace pass::simulink{
             entry["x"]    = block->getX();
             entry["y"]    = block->getY();
 
-            // Convert std::map<string,double> -> JSON object
+
             json paramsJson = json::object();
             for (const auto& [key, val] : block->getParameters()){
                 paramsJson[key] = val;
@@ -39,7 +39,7 @@ namespace pass::simulink{
         }
         project["blocks"] = blocksArray;
 
-        // --- Connections ---
+
         json connectionsArray = json::array();
         for (const auto& conn : graph.getConnections()){
             json entry;
@@ -51,31 +51,31 @@ namespace pass::simulink{
         }
         project["connections"] = connectionsArray;
 
-        // --- Simulation Settings ---
+
         project["settings"] = {
             {"startTime", scheduler.getStartTime()},
             {"endTime",   scheduler.getEndTime()},
             {"stepSize",  scheduler.getStepSize()}
         };
 
-        // --- Write to Disk ---
+
         std::ofstream file(filename);
         if (!file.is_open()){
             std::cerr << "[ProjectSerializer] ERROR: Cannot open file for writing: " << filename << "\n";
             return false;
         }
 
-        file << project.dump(4);   // 4-space indented, human-readable
+        file << project.dump(4);
         file.close();
 
         std::cout << "[ProjectSerializer] Project saved to: " << filename << "\n";
         return true;
     }
 
-    // -------------------------------------------------------------------------
-    // loadFromFile
-    // Rebuilds blocks, connections and scheduler settings from a JSON file.
-    // -------------------------------------------------------------------------
+
+
+
+
     bool ProjectSerializer::loadFromFile(const std::string& filename,
                                          BlockManager& blocks,
                                          ConnectionManager& graph,
@@ -96,7 +96,7 @@ namespace pass::simulink{
         }
         file.close();
 
-        // --- Recreate Blocks ---
+
         if (!project.contains("blocks") || !project["blocks"].is_array()){
             std::cerr << "[ProjectSerializer] ERROR: Missing or invalid 'blocks' array.\n";
             return false;
@@ -118,7 +118,7 @@ namespace pass::simulink{
             block->setX(x);
             block->setY(y);
 
-            // Convert JSON params -> std::map<string,double> and restore
+
             if (entry.contains("params") && entry["params"].is_object()){
                 std::map<std::string, double> paramMap;
                 for (const auto& [key, val] : entry["params"].items()){
@@ -132,7 +132,7 @@ namespace pass::simulink{
             blocks.addBlock(std::move(block));
         }
 
-        // --- Recreate Connections ---
+
         if (!project.contains("connections") || !project["connections"].is_array()){
             std::cerr << "[ProjectSerializer] ERROR: Missing or invalid 'connections' array.\n";
             return false;
@@ -150,7 +150,7 @@ namespace pass::simulink{
             }
         }
 
-        // --- Restore Simulation Settings ---
+
         if (project.contains("settings") && project["settings"].is_object()){
             const auto& settings = project["settings"];
             if (settings.contains("startTime")) scheduler.setStartTime(settings["startTime"].get<double>());
@@ -162,4 +162,4 @@ namespace pass::simulink{
         return true;
     }
 
-} // namespace pass::simulink
+}

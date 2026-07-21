@@ -1,0 +1,52 @@
+/* SimulinkCanvas.css */
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-app);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(79, 142, 247, 0.04) 0%, transparent 65%),
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
+.canvas-empty-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  gap: 14px;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.canvas-empty-hint__icon {
+  font-size: 56px;
+  opacity: 0.15;
+}
+
+.canvas-empty-hint__text {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.4;
+}
+
+.canvas-empty-hint__sub {
+  font-size: 12px;
+  opacity: 0.25;
+}
+
+.canvas-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+
+.canvas-svg.connecting {
+  cursor: crosshair;
+}
